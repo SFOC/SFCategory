@@ -1,0 +1,10 @@
+
+
+target 'SF_ProjectFramework' do
+
+pod 'AFNetworking'
+pod 'YYCache'
+pod 'MBProgressHUD'
+
+end
+
