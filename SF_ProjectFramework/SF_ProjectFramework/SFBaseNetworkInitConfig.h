@@ -7,19 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "YYCache.h"
+#import "AFNetworking.h"
 
 @interface SFBaseNetworkInitConfig : NSObject
-
-/*! 超时时间 */
-@property (nonatomic, assign) NSInteger timeOut;
-
-/*! 缓存 */
-@property (nonatomic, strong) YYCache   *cache;
-
-/*! 是否需要缓存（默认NO） */
-@property (nonatomic, assign) BOOL useCache;
-
-/*! 是否展示HUD (默认YES)*/
-@property (nonatomic, assign) BOOL showHud;
+/*! afn的sessionManager */
+@property (nonatomic, strong) AFHTTPSessionManager *afManager;
 @end

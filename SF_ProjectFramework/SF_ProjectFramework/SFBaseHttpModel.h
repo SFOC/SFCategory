@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "YYCache.h"
 
 typedef enum : NSUInteger {
     
@@ -22,7 +23,7 @@ typedef enum : NSUInteger {
 @interface SFBaseHttpModel : NSObject
 
 
-/** 请求Url*/
+/** 请求Url（进行加密过后的） */
 @property (copy, nonatomic) NSString *httpUrlStr;
 
 /** 请求类型*/
@@ -46,4 +47,15 @@ typedef enum : NSUInteger {
 /** 请求响应码*/
 @property (copy, nonatomic, readonly) NSString *httpStatusCodeStr;
 
+/*! 缓存的数据 */
+@property (nonatomic, strong) id cacheData;
+
+/*! 是否缓存 */
+@property (nonatomic, assign) BOOL useCache;
+
+/*! 是否展示hud */
+@property (nonatomic, assign) BOOL showHud;
+
+/*! 缓存类 */
+@property (nonatomic, strong) YYCache *cache;
 @end

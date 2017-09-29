@@ -17,6 +17,20 @@
  *
  *  @return 返回新的对象
  */
-- (id)replaceNilForObject:(id)object;
++ (id)replaceNilForObject:(id)object;
+
+
+/**
+ *  url加盐
+ *
+ *  @param urlStr url
+ *  @param parDic 参数
+ *
+ *  @return 加盐后的字符串
+ */
++ (NSString *)encryptionUrl:(NSString *)urlStr parmaters:(NSDictionary *)parDic;
+
+/** 判断纯数字（整数） */
++ (BOOL)isPureInt:(NSString *)str;
 
 @end

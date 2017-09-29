@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		046A18751F7E2F0E00112990 /* SFBaseNetworkStatusCodeEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = 046A18741F7E2F0E00112990 /* SFBaseNetworkStatusCodeEnum.m */; };
 		04C49D891F7A4BBD00721317 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C49D881F7A4BBD00721317 /* main.m */; };
 		04C49D8C1F7A4BBD00721317 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C49D8B1F7A4BBD00721317 /* AppDelegate.m */; };
 		04C49D8F1F7A4BBD00721317 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C49D8E1F7A4BBD00721317 /* ViewController.m */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		046A18731F7E2F0E00112990 /* SFBaseNetworkStatusCodeEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFBaseNetworkStatusCodeEnum.h; sourceTree = "<group>"; };
+		046A18741F7E2F0E00112990 /* SFBaseNetworkStatusCodeEnum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFBaseNetworkStatusCodeEnum.m; sourceTree = "<group>"; };
 		04C49D841F7A4BBC00721317 /* SF_ProjectFramework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SF_ProjectFramework.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C49D881F7A4BBD00721317 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		04C49D8A1F7A4BBD00721317 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -137,6 +140,8 @@
 				04C49DC41F7A536F00721317 /* SFBaseHttpModel.m */,
 				04C49DC61F7A57EC00721317 /* SFBaseNetworkTool.h */,
 				04C49DC71F7A57EC00721317 /* SFBaseNetworkTool.m */,
+				046A18731F7E2F0E00112990 /* SFBaseNetworkStatusCodeEnum.h */,
+				046A18741F7E2F0E00112990 /* SFBaseNetworkStatusCodeEnum.m */,
 				04C49D901F7A4BBD00721317 /* Main.storyboard */,
 				04C49D931F7A4BBD00721317 /* Assets.xcassets */,
 				04C49D951F7A4BBD00721317 /* LaunchScreen.storyboard */,
@@ -259,7 +264,7 @@
 				TargetAttributes = {
 					04C49D831F7A4BBC00721317 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = Z48GL26QTH;
+						DevelopmentTeam = SH5U254DZ7;
 						ProvisioningStyle = Automatic;
 					};
 					04C49D9C1F7A4BBE00721317 = {
@@ -378,6 +383,7 @@
 			files = (
 				04C49DBC1F7A4E1D00721317 /* SFBaseNetworkAccess.m in Sources */,
 				04C49D8F1F7A4BBD00721317 /* ViewController.m in Sources */,
+				046A18751F7E2F0E00112990 /* SFBaseNetworkStatusCodeEnum.m in Sources */,
 				04C49DC81F7A57EC00721317 /* SFBaseNetworkTool.m in Sources */,
 				04C49DC21F7A51FF00721317 /* SFBaseNetworkBlock.m in Sources */,
 				04C49D8C1F7A4BBD00721317 /* AppDelegate.m in Sources */,
@@ -533,7 +539,7 @@
 			baseConfigurationReference = D97CDED32D391172DF8A3639 /* Pods-SF_ProjectFramework.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Z48GL26QTH;
+				DEVELOPMENT_TEAM = SH5U254DZ7;
 				INFOPLIST_FILE = SF_ProjectFramework/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -547,7 +553,7 @@
 			baseConfigurationReference = FAC76043EF022EC990C66223 /* Pods-SF_ProjectFramework.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Z48GL26QTH;
+				DEVELOPMENT_TEAM = SH5U254DZ7;
 				INFOPLIST_FILE = SF_ProjectFramework/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

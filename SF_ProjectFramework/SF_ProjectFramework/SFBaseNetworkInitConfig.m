@@ -10,4 +10,24 @@
 
 @implementation SFBaseNetworkInitConfig
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+        self.afManager = [self sessionManager];
+    }
+    return self;
+}
+
+#pragma mark ---私有方法---
+- (AFHTTPSessionManager *)sessionManager{
+    
+    AFHTTPSessionManager *afManager = [AFHTTPSessionManager manager];
+    //        afManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    afManager.responseSerializer.acceptableContentTypes =
+    [NSSet setWithObjects:@"application/json", @"text/json", @"text/txt",
+     @"text/html",@"text/plain",nil];
+    return afManager;
+}
 @end

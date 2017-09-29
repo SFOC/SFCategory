@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "SFBaseHttpModel.h"
+#import "MBProgressHUD.h"
+#import "SFBaseNetworkStatusCodeEnum.h"
 
 /**
  *  成功的回调
