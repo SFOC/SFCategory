@@ -42,31 +42,31 @@
 }
 
 // 打印输出（dubug模式下有打印）
-- (NSString *)debugDescription {
-    
-    NSString *type;
-    switch (self.requestType) {
-        case MethodTypeGet:
-            type = @"Get";
-            break;
-        case MethodTypePost:
-            type = @"Post";
-            break;
-        case MethodTypePut:
-            type = @"Put";
-            break;
-        case MethodTypePatch:
-            type = @"Path";
-            break;
-        case MethodTypeDelete:
-            type = @"Delete";
-            break;
-            
-        default:
-            type = @"Unknow";
-            break;
-    }
-    
-    return [NSString stringWithFormat:@"\n\n*****************************************************\n*****************************************************\n\n请求方式记录：%@\n请求URL记录：%@\n请求参数记录：%@\n返回值记录：%@\n\n*****************************************************\n*****************************************************\n\n",type,self.httpUrlStr,self.requestParamDic,self.responseObject];
-}
+//- (NSString *)debugDescription {
+//    
+//    NSString *type;
+//    switch (self.requestType) {
+//        case MethodTypeGet:
+//            type = @"Get";
+//            break;
+//        case MethodTypePost:
+//            type = @"Post";
+//            break;
+//        case MethodTypePut:
+//            type = @"Put";
+//            break;
+//        case MethodTypePatch:
+//            type = @"Path";
+//            break;
+//        case MethodTypeDelete:
+//            type = @"Delete";
+//            break;
+//            
+//        default:
+//            type = @"Unknow";
+//            break;
+//    }
+//    
+//    return [NSString stringWithFormat:@"\n\n*****************************************************\n*****************************************************\n\n请求方式记录：%@\n请求URL记录：%@\n请求参数记录：%@\n返回值记录：%@\n\n*****************************************************\n*****************************************************\n\n",type,self.httpUrlStr,self.requestParamDic,self.responseObject];
+//}
 @end

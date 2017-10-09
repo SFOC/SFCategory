@@ -30,6 +30,15 @@
  */
 + (NSString *)encryptionUrl:(NSString *)urlStr parmaters:(NSDictionary *)parDic;
 
+
+/**
+ 对参数添加sign
+ 
+ @param paramDic 原始参数Dic
+ @return 添加过Sign的Dic
+ */
++ (NSDictionary *)appendSignWithParam:(NSDictionary *)paramDic;
+
 /** 判断纯数字（整数） */
 + (BOOL)isPureInt:(NSString *)str;
 

@@ -52,6 +52,17 @@
 
 /**
  *  url加盐
+    加密算法简介
+ 使用接口时，必须将所提交的参数和签名（也作为一个参数）提交给服务端。签名计算方法：
+ 假设要提交三个参数给服务端，三个参数分别为：nikename=xiaozhang, cellphone=13788996655, sex=0;
+ 第一步，将三个参数按参数名字典序排序，用”&”连接各个参数名和参数值，得到：“cellphone=13788996655&nikename=xiaozhang&sex=0”；
+ 第二步，md5加密所得多的字符串，得到：”0cfdde1a0a5d867af39440448c3c173a”；
+ 第三步，将加密后的字符串用“&”字符拼接上一个盐值（“zhwy#2017
+ ”），得到：”0cfdde1a0a5d867af39440448c3c173a& htdc”；
+ 第四步，md5加密所得到的字符串，得到签名值：“857fcfabb124b5b5c068cb56496ac9f1”；
+ 第五步，将此值作为参数“sign”的值连同其他参数一起传递给服务端。
+
+
  */
 + (NSString *)encryptionUrl:(NSString *)urlStr parmaters:(NSDictionary *)parDic {
     
@@ -87,6 +98,20 @@
     return encoded;
 }
 
+/**
+ 对参数添加sign
+ 
+ @param paramDic 原始参数Dic
+ @return 添加过Sign的Dic
+ */
++ (NSDictionary *)appendSignWithParam:(NSDictionary *)paramDic{
+    
+    NSArray *keySortedArr = [self sortKeyWithDictionary:paramDic];
+    NSString *signStr = [self getSignWithParams:paramDic keySortedArr:keySortedArr];
+    NSMutableDictionary *appendDic = [NSMutableDictionary dictionaryWithDictionary:paramDic];
+    [appendDic setValue:signStr forKey:@"sign"];
+    return appendDic;
+}
 
 /** 判断纯数字*/
 + (BOOL)isPureInt:(NSString *)str

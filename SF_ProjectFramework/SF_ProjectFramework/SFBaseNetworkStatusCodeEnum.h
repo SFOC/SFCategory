@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+/*! 服务端定义的返回的状态 */
 typedef NS_ENUM(NSUInteger, StatusCode) {
     
     ResponseStatusSuccess = 0,       // 请求成功

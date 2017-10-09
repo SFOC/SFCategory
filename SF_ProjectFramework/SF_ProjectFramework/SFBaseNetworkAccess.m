@@ -65,13 +65,12 @@ NSString * const PLHttpCache = @"PLHttpCache";
 - (void)sendPostRequestWithUrl:(NSString *)urlStr params:(NSDictionary *)parDic successBlock:(SF_RequestSuccess)success failureBlock:(SF_RequestFailure)failure {
     
     // 加盐
-    self.model.httpUrlStr = [SFBaseNetworkTool encryptionUrl:urlStr parmaters:parDic];
-    self.model.requestParamDic = parDic;
-    self.model.requestType = MethodTypeGet;
+    self.model.httpUrlStr = urlStr;
+    self.model.requestParamDic = [SFBaseNetworkTool appendSignWithParam:parDic];
+    self.model.requestType = MethodTypePost;
     self.model.cache = _cache;
     self.model.cacheData = [self.model.cache objectForKey:self.model.httpUrlStr];
     [self isShowHud];
-    
     
     if (self.model.cacheData && self.useCache) { // 如果这个链接有缓存数据（同时需要缓存），则直接返回数据，再进行请求
         
@@ -138,6 +137,7 @@ NSString * const PLHttpCache = @"PLHttpCache";
 -(SFBaseNetworkAccess * (^)(BOOL))useCache{
     return ^id(BOOL allow){
         _useCache = allow;
+        self.model.useCache = allow;
         return self;
     };
 }
@@ -145,6 +145,7 @@ NSString * const PLHttpCache = @"PLHttpCache";
 -(SFBaseNetworkAccess * (^)(BOOL))showHud{
     return ^id(BOOL show){
         _showHud = show;
+        self.model.showHud = show;
         return self;
     };
 }
@@ -152,6 +153,7 @@ NSString * const PLHttpCache = @"PLHttpCache";
 -(SFBaseNetworkAccess * (^)(NSUInteger))timeOut{
     return ^id(NSUInteger time){
         _timeOut = time;
+         self.baseNetworkInitConfig.afManager.requestSerializer.timeoutInterval = time;
         return self;
     };
 }

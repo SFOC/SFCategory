@@ -44,8 +44,11 @@ typedef enum : NSUInteger {
 /** 请求任务*/
 @property (strong, nonatomic) NSURLSessionDataTask *task;
 
-/** 请求响应码*/
+/** 请求响应码(http请求的状态码)*/
 @property (copy, nonatomic, readonly) NSString *httpStatusCodeStr;
+
+/** 服务端响应码(服务端返回的状态码)*/
+@property (copy, nonatomic) NSString *serviceStatusCodeStr;
 
 /*! 缓存的数据 */
 @property (nonatomic, strong) id cacheData;
