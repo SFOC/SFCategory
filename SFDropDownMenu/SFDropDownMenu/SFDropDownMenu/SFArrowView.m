@@ -245,4 +245,9 @@
     [self setNeedsDisplay];
 }
 
+- (void)setArrowSpaceX_YLength:(CGFloat)arrowSpaceX_YLength {
+    
+    _arrowSpaceX_YLength = arrowSpaceX_YLength;
+    [self setNeedsDisplay];
+}
 @end

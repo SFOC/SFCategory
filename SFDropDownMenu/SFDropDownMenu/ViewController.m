@@ -32,6 +32,17 @@
     return @[@"附近",@"总价",@"户型",@"更多"].mutableCopy;
 }
 
+- (SF_DDMB_ShowViewType)sf_dropDownMenu:(SFDropDownMenu *)dropDownMenu index:(NSInteger)index {
+    
+    if (index == 0) {
+        
+        return SF_DDMB_ShowViewSingleRowType;
+    }else {
+        
+        return SF_DDMB_ShowViewLinkageType;
+    }
+}
+
 - (void)sf_dropDownMenu:(SFDropDownMenu *)dropDownMenu didSelectIndex:(NSInteger)index {
     
     NSLog(@"点击了==%ld",index);

@@ -10,6 +10,7 @@
 #import "SFDropDownMenuTopView.h"
 #import "SFDropDownMenuBottomMultistageView.h"
 #import "SFDropDownMenuMaro.h"
+#import "SFDDMBottomSingleOrMultiSelectView.h"
 
 @interface SFDropDownMenu ()
 
@@ -23,6 +24,16 @@
 
 /// 记录首次设置的位置大小
 @property (nonatomic, assign) CGRect rect;
+
+/// 要展示的view的type类型
+@property (nonatomic, assign) SF_DDMB_ShowViewType showViewType;
+
+/// 多表联动view
+@property (nonatomic, strong) SFDropDownMenuBottomMultistageView *linkageView;
+
+/// 单行view
+@property (nonatomic, strong) SFDDMBottomSingleOrMultiSelectView *singleRowView;
+
 @end
 
 @implementation SFDropDownMenu
@@ -62,8 +73,15 @@
         self.titleMArr = [_dataSource sf_dropDownMenu:self];
     }
     
+    
     /// 添加顶部菜单view到baseView上
     [self addSubview:self.topView];
+}
+
+- (void)setDelegate:(id<SFDropDownMenuDelegate>)delegate {
+    _delegate = delegate;
+    
+    
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -106,12 +124,76 @@
             [weakSelf.delegate sf_dropDownMenu:weakSelf didSelectIndex:index];
         }
         
-        SFDropDownMenuBottomMultistageView *view = [[SFDropDownMenuBottomMultistageView alloc] initWithFrame:CGRectMake(0, 50 + 5, SF_DDM_Width, 200)];
-        view.borderArrowDirect = sf_borderArrowDirectTop;
-        view.arrowSpaceX_YLength = 20;
-        view.radian = 0;
-        view.borderColor = [UIColor whiteColor];
-        [weakSelf addSubview:view];
+        if ([weakSelf.dataSource respondsToSelector:@selector(sf_dropDownMenu:index:)]) {
+            
+            /// 点击item的时候返回要展示的view类型
+            weakSelf.showViewType = [weakSelf.dataSource sf_dropDownMenu:weakSelf index:index];
+        }
+
+        
+        switch (weakSelf.showViewType) { /// 点击了item需要展示的view
+            case SF_DDMB_ShowViewLinkageType: /// 多表联动型
+            {
+                for (UIView *view in weakSelf.subviews) {
+                    
+                    if (![view isMemberOfClass:[SFDropDownMenuTopView class]]) {
+                        
+                        view.hidden = YES;
+                    }
+                }
+                
+                weakSelf.linkageView.hidden = NO;
+                if (![weakSelf.subviews containsObject:weakSelf.linkageView]) {
+                    
+                    [weakSelf addSubview:weakSelf.linkageView];
+                }
+                
+                CGFloat with = 0.0;
+                if (weakSelf.numOfMenu > self.titleMArr.count) {
+                    
+                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.numOfMenu;
+                }else {
+                    
+                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.titleMArr.count;
+                }
+                weakSelf.linkageView.arrowSpaceX_YLength = with * index + with/2;
+                
+            }
+                break;
+            case SF_DDMB_ShowViewSingleRowType: /// 单列多选或单选
+            {
+                for (UIView *view in weakSelf.subviews) {
+                    
+                    if (![view isMemberOfClass:[SFDropDownMenuTopView class]]) {
+                        
+                        view.hidden = YES;
+                    }
+                }
+                
+                weakSelf.singleRowView.hidden = NO;
+                if (![weakSelf.subviews containsObject:weakSelf.singleRowView]) {
+                    
+                    [weakSelf addSubview:weakSelf.singleRowView];
+                }
+                
+                CGFloat with = 0.0;
+                if (weakSelf.numOfMenu > self.titleMArr.count) {
+                    
+                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.numOfMenu;
+                }else {
+                    
+                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.titleMArr.count;
+                }
+                
+                weakSelf.singleRowView.arrowSpaceX_YLength = with*index + with/2.0;
+            }
+                break;
+                
+            default:
+                break;
+        }
+        
+        
         
         weakSelf.frame = weakSelf.rect;
         [UIView animateWithDuration:0.3 animations:^{
@@ -121,6 +203,34 @@
     };
     
     return _topView;
+}
+
+- (SFDropDownMenuBottomMultistageView *)linkageView {
+    
+    if (!_linkageView) {
+        
+        _linkageView = [[SFDropDownMenuBottomMultistageView alloc] initWithFrame:CGRectMake(0, 50 + 5, SF_DDM_Width, 200)];
+        _linkageView.borderArrowDirect = sf_borderArrowDirectTop;
+        _linkageView.arrowSpaceX_YLength = 20;
+        _linkageView.radian = 0;
+        _linkageView.borderColor = [UIColor whiteColor];
+    }
+    return _linkageView;
+}
+
+- (SFDDMBottomSingleOrMultiSelectView *)singleRowView {
+    
+    if (!_singleRowView) {
+        
+        _singleRowView = [[SFDDMBottomSingleOrMultiSelectView alloc] initWithFrame:CGRectMake(0, 50 + 5, SF_DDM_Width, 200)];
+        _singleRowView.borderArrowDirect = sf_borderArrowDirectTop;
+        _singleRowView.arrowSpaceX_YLength = 20;
+        _singleRowView.radian = 0;
+        _singleRowView.borderColor = [UIColor blueColor];
+        _singleRowView.backgroundColor = [UIColor orangeColor];
+    }
+    
+    return _singleRowView;
 }
 
 #pragma mark ---私有方法---

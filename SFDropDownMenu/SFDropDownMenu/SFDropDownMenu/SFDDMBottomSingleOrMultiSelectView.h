@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SFArrowView.h"
 
 /// 单选或多选type
 typedef enum : NSUInteger {
@@ -17,7 +18,7 @@ typedef enum : NSUInteger {
     SF_DDMB_MultiSelectView,
 } SF_DDMB_SelectType;
 
-@interface SFDDMBottomSingleOrMultiSelectView : UIView
+@interface SFDDMBottomSingleOrMultiSelectView : SFArrowView
 
 /*! 单选或多选 */
 @property (nonatomic, assign) SF_DDMB_SelectType selectType;
