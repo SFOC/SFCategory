@@ -250,4 +250,11 @@
     _arrowSpaceX_YLength = arrowSpaceX_YLength;
     [self setNeedsDisplay];
 }
+
+- (void)setFrame:(CGRect)frame {
+    
+    [super setFrame:frame];
+    
+    [self setNeedsDisplay];
+}
 @end

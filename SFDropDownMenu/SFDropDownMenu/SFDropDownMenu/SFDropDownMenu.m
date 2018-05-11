@@ -25,15 +25,11 @@
 /// 记录首次设置的位置大小
 @property (nonatomic, assign) CGRect rect;
 
-/// 要展示的view的type类型
-@property (nonatomic, assign) SF_DDMB_ShowViewType showViewType;
+/// 缓存注册了的view
+@property (nonatomic, strong) NSMutableDictionary *cacheRegisterViewMDic;
 
-/// 多表联动view
-@property (nonatomic, strong) SFDropDownMenuBottomMultistageView *linkageView;
-
-/// 单行view
-@property (nonatomic, strong) SFDDMBottomSingleOrMultiSelectView *singleRowView;
-
+/// 缓存对应位置的的view
+@property (nonatomic, strong) NSMutableArray *cacheIndexPositionView;
 @end
 
 @implementation SFDropDownMenu
@@ -44,7 +40,6 @@
     if (self) {
        
         [self initialize];
-        [self createUI];
     }
     return self;
 }
@@ -55,35 +50,17 @@
     if (self) {
         
         [self initialize];
-        [self createUI];
     }
     return self;
 }
-#pragma mark ---set方法---
-- (void)setDataSource:(id<SFDropDownMenuDataSource>)dataSource  {
-    
-    _dataSource = dataSource;
-    if ([_dataSource respondsToSelector:@selector(titleNumInSf_dropDownMenu:)]) {
-    
-        self.numOfMenu = [_dataSource titleNumInSf_dropDownMenu:self];
-    }
-    
-    if ([_dataSource respondsToSelector:@selector(sf_dropDownMenu:)]) {
-    
-        self.titleMArr = [_dataSource sf_dropDownMenu:self];
-    }
-    
-    
-    /// 添加顶部菜单view到baseView上
-    [self addSubview:self.topView];
-}
 
-- (void)setDelegate:(id<SFDropDownMenuDelegate>)delegate {
-    _delegate = delegate;
+- (void)awakeFromNib {
     
+    [super awakeFromNib];
+    [self initialize];
     
 }
-
+#pragma mark -------------------------------------set方法--------------------------
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     
@@ -95,7 +72,7 @@
     
 }
 
-#pragma mark ---懒加载---
+#pragma mark ------------------------------懒加载--------------------------------------
 - (SFDropDownMenuTopView *)topView {
     
     if (!_topView) {
@@ -119,81 +96,35 @@
     /// 按钮的点击方法
     _topView.clickAction = ^(NSInteger index) {
         
+        for (UIView *view in weakSelf.cacheIndexPositionView) {
+            
+            view.hidden = YES;
+        }
+        
+        
         if ([weakSelf.delegate respondsToSelector:@selector(sf_dropDownMenu:didSelectIndex:)]) {
             
             [weakSelf.delegate sf_dropDownMenu:weakSelf didSelectIndex:index];
         }
         
-        if ([weakSelf.dataSource respondsToSelector:@selector(sf_dropDownMenu:index:)]) {
+        
+        if ([weakSelf.dataSource respondsToSelector:@selector(sf_dropDownMenuShowView:index:)]) {
             
             /// 点击item的时候返回要展示的view类型
-            weakSelf.showViewType = [weakSelf.dataSource sf_dropDownMenu:weakSelf index:index];
-        }
-
-        
-        switch (weakSelf.showViewType) { /// 点击了item需要展示的view
-            case SF_DDMB_ShowViewLinkageType: /// 多表联动型
-            {
-                for (UIView *view in weakSelf.subviews) {
-                    
-                    if (![view isMemberOfClass:[SFDropDownMenuTopView class]]) {
-                        
-                        view.hidden = YES;
-                    }
-                }
+            UIView *view = [weakSelf.dataSource sf_dropDownMenuShowView:weakSelf index:index];
+            view.hidden = NO;
+            if (![weakSelf.subviews containsObject:view]) {
                 
-                weakSelf.linkageView.hidden = NO;
-                if (![weakSelf.subviews containsObject:weakSelf.linkageView]) {
-                    
-                    [weakSelf addSubview:weakSelf.linkageView];
-                }
-                
-                CGFloat with = 0.0;
-                if (weakSelf.numOfMenu > self.titleMArr.count) {
-                    
-                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.numOfMenu;
-                }else {
-                    
-                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.titleMArr.count;
-                }
-                weakSelf.linkageView.arrowSpaceX_YLength = with * index + with/2;
-                
+                [weakSelf addSubview:view];
             }
-                break;
-            case SF_DDMB_ShowViewSingleRowType: /// 单列多选或单选
-            {
-                for (UIView *view in weakSelf.subviews) {
-                    
-                    if (![view isMemberOfClass:[SFDropDownMenuTopView class]]) {
-                        
-                        view.hidden = YES;
-                    }
-                }
-                
-                weakSelf.singleRowView.hidden = NO;
-                if (![weakSelf.subviews containsObject:weakSelf.singleRowView]) {
-                    
-                    [weakSelf addSubview:weakSelf.singleRowView];
-                }
-                
-                CGFloat with = 0.0;
-                if (weakSelf.numOfMenu > self.titleMArr.count) {
-                    
-                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.numOfMenu;
-                }else {
-                    
-                    with = (CGFloat)weakSelf.frame.size.width/(CGFloat)weakSelf.titleMArr.count;
-                }
-                
-                weakSelf.singleRowView.arrowSpaceX_YLength = with*index + with/2.0;
-            }
-                break;
-                
-            default:
-                break;
         }
         
-        
+        if ([weakSelf.delegate respondsToSelector:@selector(sf_dropDownMenu:rectReturnIndex:)]) {
+            
+            CGRect rect = [weakSelf.delegate sf_dropDownMenu:weakSelf rectReturnIndex:index];
+            UIView *view = weakSelf.cacheIndexPositionView[index];
+            view.frame = rect;
+        }
         
         weakSelf.frame = weakSelf.rect;
         [UIView animateWithDuration:0.3 animations:^{
@@ -205,42 +136,34 @@
     return _topView;
 }
 
-- (SFDropDownMenuBottomMultistageView *)linkageView {
+- (NSMutableDictionary *)cacheRegisterViewMDic {
     
-    if (!_linkageView) {
+    if (!_cacheRegisterViewMDic) {
         
-        _linkageView = [[SFDropDownMenuBottomMultistageView alloc] initWithFrame:CGRectMake(0, 50 + 5, SF_DDM_Width, 200)];
-        _linkageView.borderArrowDirect = sf_borderArrowDirectTop;
-        _linkageView.arrowSpaceX_YLength = 20;
-        _linkageView.radian = 0;
-        _linkageView.borderColor = [UIColor whiteColor];
-    }
-    return _linkageView;
-}
-
-- (SFDDMBottomSingleOrMultiSelectView *)singleRowView {
-    
-    if (!_singleRowView) {
-        
-        _singleRowView = [[SFDDMBottomSingleOrMultiSelectView alloc] initWithFrame:CGRectMake(0, 50 + 5, SF_DDM_Width, 200)];
-        _singleRowView.borderArrowDirect = sf_borderArrowDirectTop;
-        _singleRowView.arrowSpaceX_YLength = 20;
-        _singleRowView.radian = 0;
-        _singleRowView.borderColor = [UIColor blueColor];
-        _singleRowView.backgroundColor = [UIColor orangeColor];
+        _cacheRegisterViewMDic = [NSMutableDictionary new];
     }
     
-    return _singleRowView;
+    return _cacheRegisterViewMDic;
 }
 
-#pragma mark ---私有方法---
+
+- (NSMutableArray *)cacheIndexPositionView {
+    if (!_cacheIndexPositionView) {
+        
+        _cacheIndexPositionView = [NSMutableArray new];
+    }
+    
+    return _cacheIndexPositionView;
+}
+#pragma mark -------------------------------------私有方法---------------------------------
 /// 创建UI
 - (void) createUI {
     
-//    SFDropDownMenuTopView *
+    /// 添加顶部菜单view到baseView上
+    [self addSubview:self.topView];
 }
 
-#pragma mark ---初始化变量---
+#pragma mark ----------------------------------初始化变量-----------------------------------
 - (void) initialize {
     
     if (CGRectIsNull(self.frame) || CGRectIsEmpty(self.frame)) {
@@ -252,6 +175,82 @@
     }
 }
 
+#pragma mark ------------------------------------外部调用方法--------------------------------
+- (void)registerClass:(Class)cellClass forViewReuseIdentifier:(NSString *)identifier {
 
+    /// 缓存view
+    UIView *view = [[SFDDMBottomSingleOrMultiSelectView alloc] init];
+//    UIView *view = [NSClassFromString(@"SFDDMBottomSingleOrMultiSelectView") new];
+    view.frame = CGRectMake(0, 55, [UIScreen mainScreen].bounds.size.width, 200);
+    [view setNeedsDisplay];
+    [self.cacheRegisterViewMDic setValue:view forKey:identifier];
+}
 
+- (void)registerNib:(UINib *)nib forViewReuseIdentifier:(NSString *)identifier {
+   
+    
+}
+
+- (nullable __kindof UIView *)dequeueReusableViewWithIdentifier:(NSString *)identifier index:(NSInteger)index {
+    
+    UIView *view = self.cacheRegisterViewMDic[identifier];
+    return view;
+}
+
+- (void)reloadRefreshSFDropDownMenu {
+#pragma mark ---dataSource设置响应----
+    if (self.dataSource) {
+        
+        /// 接受返回个数
+        if ([_dataSource respondsToSelector:@selector(titleNumInSf_dropDownMenu:)]) {
+            
+            self.numOfMenu = [_dataSource titleNumInSf_dropDownMenu:self];
+        }
+        
+        
+        /// 接收title数组
+        if ([_dataSource respondsToSelector:@selector(sf_dropDownMenu:)]) {
+            
+            self.titleMArr = [_dataSource sf_dropDownMenu:self];
+        }
+        
+        
+        /// 接收需要展示的view并缓存起来
+        if ([_dataSource respondsToSelector:@selector(sf_dropDownMenuShowView:index:)]) {
+            
+            [self.cacheIndexPositionView removeAllObjects];
+            // 这个时候将所有view缓存起来
+            for (int i = 0; i < self.numOfMenu; i++) {
+                
+                /// 此时如果还没有注册所以获可能获取不到
+                UIView *view = [_dataSource sf_dropDownMenuShowView:self index:i];
+                if (view) {
+                    
+                    [self.cacheIndexPositionView addObject:view];
+                }else {
+                    
+                    [self.cacheIndexPositionView addObject:[UIView new]];
+                }
+            }
+        }
+    }
+    
+    
+#pragma mark ---delegate设置响应----
+    if (self.delegate) {
+        
+        if ([_delegate respondsToSelector:@selector(sf_dropDownMenu:rectReturnIndex:)]) {
+            
+           
+            
+        }
+    }
+}
+
+#pragma mark ------------------------------系统方法----------------------------------------
+- (void)drawRect:(CGRect)rect {
+
+    [self reloadRefreshSFDropDownMenu];
+    [self createUI];
+}
 @end

@@ -31,7 +31,10 @@ typedef enum : NSUInteger {
  */
 - (void) sf_dropDownMenu:(SFDropDownMenu *)dropDownMenu didSelectIndex:(NSInteger)index;
 
-
+/*!
+ 返回对应位置的view的rect (不写默认是CGRectMake(0, 55, [UIScreen mainScreen].bounds.size.width, 200))
+ */
+- (CGRect) sf_dropDownMenu:(SFDropDownMenu *)dropDownMenu rectReturnIndex:(NSInteger)index;
 
 @end
 
@@ -45,7 +48,14 @@ typedef enum : NSUInteger {
 /*!
  每个item点击对应要弹出的view类型
  */
-- (SF_DDMB_ShowViewType) sf_dropDownMenu:(SFDropDownMenu *)dropDownMenu index:(NSInteger)index;
+//- (SF_DDMB_ShowViewType) sf_dropDownMenu:(SFDropDownMenu *)dropDownMenu index:(NSInteger)index;
+
+
+/*!
+ 每个位置需要展示的view需要自己定义
+ */
+- (UIView *) sf_dropDownMenuShowView:(SFDropDownMenu *)dropDownMenu index:(NSInteger)index;
+
 
 @optional
 /// 标题个数
@@ -64,6 +74,20 @@ typedef enum : NSUInteger {
 /// 一般代理
 @property (nonatomic, weak) id<SFDropDownMenuDelegate> delegate;
 
+
+
+#pragma mark ---SFDropDownMenu的方法---
+/// 注册View作为需要展示的view（UINib的view）
+- (void)registerNib:(nullable UINib *)nib forViewReuseIdentifier:(NSString *)identifier;
+
+/// 注册View作为需要展示的view（代码写的view）
+- (void)registerClass:(nullable Class)cellClass forViewReuseIdentifier:(NSString *)identifier;
+
+/// 获取需要返回展示的view  __kindof表示当前类或其子类   nullable表示对象可以为空
+- (nullable __kindof UIView *)dequeueReusableViewWithIdentifier:(NSString *)identifier index:(NSInteger)index;
+
+/// 刷新
+- (void) reloadRefreshSFDropDownMenu;
 @end
 
 
