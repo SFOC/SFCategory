@@ -37,7 +37,13 @@
 /// 光标颜色（默认blue）
 @property (nonatomic, strong) UIColor *cursorColor;
 #pragma mark ---颜色---
-/// text变化的时候的block回调
-@property (nonatomic, copy) void (^textChangeBlock)(NSString *text);
+/*！
+ text变化的时候的block回调
+ text：当前的textView的内容
+ currentWordsNum：当前字数
+ */
+@property (nonatomic, copy) void (^textChangeBlock)(NSString *text, NSInteger currentWordsNum);
 
+/// 超出限制字符block
+@property (nonatomic, copy) void (^beyondLimitWords)(void);
 @end

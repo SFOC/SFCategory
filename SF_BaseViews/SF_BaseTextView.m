@@ -179,7 +179,7 @@
     
     if (self.textChangeBlock) {
         
-        self.textChangeBlock(self.text);
+        self.textChangeBlock(self.text, self.text.length);
     }
 }
 #pragma mark ---UITextViewDelegate---
@@ -193,6 +193,10 @@
         return YES;
     }else if (textView.text.length >= self.limitWordsNum) {
         
+        if (self.beyondLimitWords) {
+            
+            self.beyondLimitWords();
+        }
         return NO;
     }
     return YES;
