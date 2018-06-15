@@ -176,14 +176,15 @@
         
         self.placeholderLabel.hidden = YES;
     }
+}
+#pragma mark ---UITextViewDelegate---
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
     
     if (self.textChangeBlock) {
         
         self.textChangeBlock(self.text, self.text.length);
     }
-}
-#pragma mark ---UITextViewDelegate---
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     if (self.limitWordsNum <= 0) {
         
