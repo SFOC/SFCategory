@@ -1,7 +1,7 @@
 //
 //  SF_BaseTextView.m
 //  YN_PassWordView
-//
+//  密码框
 //  Created by fly（石峰） on 2018/6/13.
 //  Copyright © 2018年 ijianghu. All rights reserved.
 //
@@ -68,6 +68,10 @@
     self.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewDidChangeAction:) name:UITextViewTextDidChangeNotification object:self];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewDidEndEditorAction:) name:UITextViewTextDidEndEditingNotification object:self];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewBeginEditorAction:) name:UITextViewTextDidBeginEditingNotification object:self];
     
     [self addObserver:self forKeyPath:@"font" options:NSKeyValueObservingOptionNew |
      NSKeyValueObservingOptionOld context:nil];
@@ -177,6 +181,23 @@
         self.placeholderLabel.hidden = YES;
     }
 }
+
+- (void) textViewDidEndEditorAction:(NSNotification *)sender {
+    
+    if (self.textEndEditorBlock) {
+        
+        self.textEndEditorBlock(self.text);
+    }
+}
+
+- (void) textViewBeginEditorAction:(NSNotification *)sender {
+    
+    if (self.textBeginEditorBlock) {
+        
+        self.textBeginEditorBlock();
+    }
+}
+
 #pragma mark ---UITextViewDelegate---
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     

@@ -1,7 +1,7 @@
 //
 //  SF_BaseTextView.h
 //  YN_PassWordView
-//
+//  
 //  Created by fly（石峰） on 2018/6/13.
 //  Copyright © 2018年 ijianghu. All rights reserved.
 //
@@ -36,7 +36,8 @@
 
 /// 光标颜色（默认blue）
 @property (nonatomic, strong) UIColor *cursorColor;
-#pragma mark ---颜色---
+
+#pragma mark ---block---
 /*！
  text变化的时候的block回调
  text：当前的textView的内容
@@ -46,4 +47,10 @@
 
 /// 超出限制字符block
 @property (nonatomic, copy) void (^beyondLimitWords)(void);
+
+/// 结束编辑
+@property (nonatomic, copy) void (^textEndEditorBlock)(NSString *text);
+
+/// 开始编辑
+@property (nonatomic, copy) void (^textBeginEditorBlock)(void);
 @end
