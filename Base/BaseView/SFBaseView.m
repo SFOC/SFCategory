@@ -29,7 +29,10 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        
+        @"000添加的第一行";
+        @"000添加的第二行"；
+        @"000添加的第三行"；
+        @"000添加的第四行"
         [self initialize];
     }
     
