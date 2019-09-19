@@ -29,7 +29,10 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        
+        @"添加的第一行";
+        @"添加的第二行"；
+        @"添加的第三行"；
+        @"添加的第四行"
         [self initialize];
     }
     
