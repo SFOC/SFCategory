@@ -22,11 +22,12 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 
+
     @"添加的分支";
     @"添加的分支";
     @"添加的分支";
     @"添加的分支";
-    
+
 
     [self initialize];
 }
