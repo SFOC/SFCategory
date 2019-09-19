@@ -22,6 +22,12 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 
+    @"添加的master";
+    @"添加的master";
+    @"添加的master";
+    @"添加的master";
+    @"添加的master";
+    
 
 
     [self initialize];
