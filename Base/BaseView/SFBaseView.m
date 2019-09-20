@@ -16,6 +16,11 @@
         
         [self initialize];
     }
+    @"添加的master";
+    @"添加的master";
+    @"添加的master";
+    @"添加的master";
+    @"添加的master";
     return self;
 }
 
