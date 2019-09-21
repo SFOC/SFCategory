@@ -21,25 +21,6 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-
-
-
-    @"添加的master";
-    @"添加的master";
-    @"添加的master";
-    @"添加的master";
-    @"添加的master";
-    
-
-
-
-    @"添加的分支";
-    @"添加的分支";
-    @"添加的分支";
-    @"添加的分支";
-
-
-
     [self initialize];
 }
 
@@ -47,14 +28,7 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        @"添加的第一行";
-        @"添加的第二行"；
-        @"添加的第三行"；
-        @"添加的第四行"
-        @"000添加的第一行";
-        @"000添加的第二行"；
-        @"000添加的第三行"；
-        @"000添加的第四行"
+       
         [self initialize];
     }
     
